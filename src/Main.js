@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { Route, withRouter } from 'react-router-dom';
+
 import { Card, CardContent, CardActions, Button,  } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -36,15 +38,29 @@ class Main extends Component {
         </Card>
         <Card style={{ flex: "1" }}>
           <CardContent>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam repellendus debitis quas delectus eum quos vel totam eos perspiciatis culpa odit, necessitatibus aspernatur at dolor quis adipisci odio voluptas. Nesciunt?
+            <Route path="/main" component={ Hello } />
           </CardContent>
           <CardActions>
-            <Button color="primary">BUTTON ONE</Button>
-            <Button color="secondary">BUTTON TWO</Button>
+            <Button color="primary"
+              onClick={() => {
+                this.props.history.push("/main?keyOne=the best&keyTwo=purple&category=Men");
+              }}>WITH QUERY</Button>
+            <Button color="secondary"
+              onClick={() => {
+                this.props.history.push("/main");
+              }}>WITHOUT QUERY</Button>
           </CardActions>
         </Card>
       </div>
     );
+  }
+}
+
+class Hello extends Component {
+  render() {
+    return this.props.location.search
+      ? (<div>SEARCH STRING: { this.props.location.search }</div>)
+      : (<div>No search string exists</div>)
   }
 }
 
@@ -58,5 +74,6 @@ const mapDispatch = dispatch => ({
 
 const MainWithAccessToStyleObject = withStyles(styles)(Main);
 const MainConnectedToStoreWithAccessToStyleObject = connect(mapState, mapDispatch)(MainWithAccessToStyleObject);
+const MainWithRouterConnectedToStoreWithAccessToStyleObject = withRouter(MainConnectedToStoreWithAccessToStyleObject)
 
-export default MainConnectedToStoreWithAccessToStyleObject;
+export default MainWithRouterConnectedToStoreWithAccessToStyleObject;

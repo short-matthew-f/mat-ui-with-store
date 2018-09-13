@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+
 import store from './store';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -18,15 +20,17 @@ const theme = createMuiTheme({
   },
 });
 
-
-
-
 class App extends Component {
   render() {
     return (
       <Provider store={ store }>
         <MuiThemeProvider theme={ theme }>
-          <Main />
+          <Router>
+            <Switch>
+              <Route path="/main" component={ Main } />
+              <Redirect to="/main" />
+            </Switch>
+          </Router>
         </MuiThemeProvider>
       </Provider>
     )
